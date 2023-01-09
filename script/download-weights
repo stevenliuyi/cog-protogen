@@ -2,26 +2,28 @@
 
 import os
 import shutil
+import torch
 from diffusers import StableDiffusionPipeline
 from diffusers.pipelines.stable_diffusion.safety_checker import (
     StableDiffusionSafetyChecker,
 )
 
 
-MODEL_ID = "stabilityai/stable-diffusion-2-1"
+MODEL_ID = "darkstorm2150/Protogen_v2.2_Official_Release"
 MODEL_CACHE = "diffusers-cache"
-SAFETY_MODEL_ID = "CompVis/stable-diffusion-safety-checker"
+#SAFETY_MODEL_ID = "CompVis/stable-diffusion-safety-checker"
 
 if os.path.exists(MODEL_CACHE):
     shutil.rmtree(MODEL_CACHE)
 os.makedirs(MODEL_CACHE, exist_ok=True)
 
-saftey_checker = StableDiffusionSafetyChecker.from_pretrained(
-    SAFETY_MODEL_ID,
-    cache_dir=MODEL_CACHE,
-)
+#saftey_checker = StableDiffusionSafetyChecker.from_pretrained(
+#    SAFETY_MODEL_ID,
+#    cache_dir=MODEL_CACHE,
+#)
 
 pipe = StableDiffusionPipeline.from_pretrained(
     MODEL_ID,
+    torch_dtype=torch.float16,
     cache_dir=MODEL_CACHE,
 )

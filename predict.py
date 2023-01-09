@@ -10,30 +10,31 @@ from diffusers import (
     DDIMScheduler,
     EulerDiscreteScheduler,
     EulerAncestralDiscreteScheduler,
-    DPMSolverMultistepScheduler,
+    DPMSolverMultistepScheduler
 )
-from diffusers.pipelines.stable_diffusion.safety_checker import (
-    StableDiffusionSafetyChecker,
-)
+#from diffusers.pipelines.stable_diffusion.safety_checker import (
+#    StableDiffusionSafetyChecker,
+#)
 
 
-MODEL_ID = "stabilityai/stable-diffusion-2-1"
+MODEL_ID = "darkstorm2150/Protogen_v2.2_Official_Release"
 MODEL_CACHE = "diffusers-cache"
-SAFETY_MODEL_ID = "CompVis/stable-diffusion-safety-checker"
+#SAFETY_MODEL_ID = "CompVis/stable-diffusion-safety-checker"
 
 
 class Predictor(BasePredictor):
     def setup(self):
         """Load the model into memory to make running multiple predictions efficient"""
         print("Loading pipeline...")
-        safety_checker = StableDiffusionSafetyChecker.from_pretrained(
-            SAFETY_MODEL_ID,
-            cache_dir=MODEL_CACHE,
-            local_files_only=True,
-        )
+        #safety_checker = StableDiffusionSafetyChecker.from_pretrained(
+        #    SAFETY_MODEL_ID,
+        #    cache_dir=MODEL_CACHE,
+        #    local_files_only=True,
+        #)
         self.pipe = StableDiffusionPipeline.from_pretrained(
             MODEL_ID,
-            safety_checker=safety_checker,
+            #safety_checker=safety_checker,
+            torch_dtype=torch.float16,
             cache_dir=MODEL_CACHE,
             local_files_only=True,
         ).to("cuda")
@@ -52,12 +53,12 @@ class Predictor(BasePredictor):
         width: int = Input(
             description="Width of output image. Maximum size is 1024x768 or 768x1024 because of memory limits",
             choices=[128, 256, 384, 448, 512, 576, 640, 704, 768, 832, 896, 960, 1024],
-            default=768,
+            default=512,
         ),
         height: int = Input(
             description="Height of output image. Maximum size is 1024x768 or 768x1024 because of memory limits",
             choices=[128, 256, 384, 448, 512, 576, 640, 704, 768, 832, 896, 960, 1024],
-            default=768,
+            default=512,
         ),
         prompt_strength: float = Input(
             description="Prompt strength when using init image. 1.0 corresponds to full destruction of information in init image",
@@ -118,8 +119,8 @@ class Predictor(BasePredictor):
 
         output_paths = []
         for i, sample in enumerate(output.images):
-            if output.nsfw_content_detected and output.nsfw_content_detected[i]:
-                continue
+            #if output.nsfw_content_detected and output.nsfw_content_detected[i]:
+            #    continue
 
             output_path = f"/tmp/out-{i}.png"
             sample.save(output_path)
