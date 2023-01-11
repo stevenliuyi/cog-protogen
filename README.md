@@ -1,8 +1,6 @@
-# Stable Diffusion v2 Cog model
+# Stable Diffusion Protogen Cog model
 
-[![Replicate](https://replicate.com/stability-ai/stable-diffusion/badge)](https://replicate.com/stability-ai/stable-diffusion) 
-
-This is an implementation of the [Diffusers Stable Diffusion v2.1](https://huggingface.co/stabilityai/stable-diffusion-2-1) as a Cog model. [Cog packages machine learning models as standard containers.](https://github.com/replicate/cog)
+This is an implementation of the [Protogen v2.2](https://huggingface.co/darkstorm2150/Protogen_v2.2_Official_Release) as a Cog model. [Cog packages machine learning models as standard containers.](https://github.com/replicate/cog)
 
 First, download the pre-trained weights:
 
